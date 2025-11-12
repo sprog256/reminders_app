@@ -2,6 +2,7 @@
 
 Kalendorius pateikia Lietuvos šventines dienas ir leidžia tvarkyti savo priminimus, 1 metų laikotarpiui nuo einamosios dienos.
 
+
 ![alt text](image.png)
 
 
@@ -24,7 +25,7 @@ Projekto dalys:
 - `yup`
 
 `reminders.api` technologijos:
-- `Java`,
+- `Java`
 - `Spring Boot`
 - `Spring JPA`
 - `Flyway`
@@ -93,6 +94,28 @@ docker logs reminder_db
 #### WEB aplikacijos patikrinimas
 * http://localhost:3000 - atidaro WEB aplikaciją
 
+#### Išvalymas
+`PostgreSQL` duomenų bazė naudoja `Docker` objektus, kurie užima vietą diske. Šiuos objektus reikia pašalinti, jei duomenų bazė nebereikalinga.
+
+Duomenų bazės sustabdymo komanda:
+```
+docker stop reminder_db
+```
+
+`PostgreSQL` konteinerio pašalinimo komanda:
+```
+docker container rm reminder_db
+```
+
+`PostgreSQL` duomenų saugyklos pašalinimo komanda:
+```
+docker volume rm reminder_db_volume
+```
+
+`PostgreSQL` rinkmenos, kuri naudojama konteinerio sukūrimui, pašalinimo komanda:
+```
+docker image rm postgres:14.5
+```
 
 
 ## Authors
