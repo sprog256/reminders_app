@@ -1,7 +1,9 @@
 # Kalendoriaus priminimai
 
 Kalendorius pateikia Lietuvos šventines dienas ir leidžia tvarkyti savo priminimus, 1 metų laikotarpiui nuo einamosios dienos.
+
 ![alt text](image.png)
+
 
 Projektas skirtas tik demonstravimui.
 
@@ -53,12 +55,12 @@ Projekto paleidimui reikalingos priemonės:
 
 * atsisiųsti `reminders.api` projektą iš `Github`
 ```
-git clone
+git clone https://github.com/sprog256/reminders.api.git
 
 ```
 * atsisiųsti `reminders_app` projektą iš
 ```
-git clone
+git clone https://github.com/sprog256/reminders_app.git
 ```
 
 * Startuoti `PostgreSQL`. Paleidimo skriptas `docker-compose.yaml` yra kataloge `reminders.api`, kuriame reikia įvykdyti skripto paleidimo komandą:
@@ -71,7 +73,11 @@ docker-compose up -d db
 ./mvnw spring-boot:run
 ```
 
-* Paleisti `reminders_app`. Kataloge `reminders_app` įvykdyti komandą:
+* Paleisti `reminders_app`. Kataloge `reminders_app` įvykdyti komandas:
+```
+npm install
+```
+
 ```
 npm run dev -- --port 3000
 ```
