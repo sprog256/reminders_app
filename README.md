@@ -58,7 +58,7 @@ Projekto paleidimui reikalingos priemonės:
 git clone https://github.com/sprog256/reminders.api.git
 
 ```
-* atsisiųsti `reminders_app` projektą iš
+* atsisiųsti `reminders_app` projektą iš `Github`
 ```
 git clone https://github.com/sprog256/reminders_app.git
 ```
