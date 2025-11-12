@@ -1,0 +1,41 @@
+.App {
+  text-align: center;
+}
+
+.calendar__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.react-calendar {
+  width: 600px;
+}
+
+.holiday {
+  color: #f70303 !important;
+  font-weight: bold !important;
+}
+
+.bubble__container {
+  text-align: center;
+}
+
+.bubble {
+  background-color: #04AA6D !important;
+  border-radius: 10px;
+  padding: 3px;
+  color: white !important;
+}
+
+.reminders__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.holidays__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
