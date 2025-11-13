@@ -8,12 +8,13 @@ import Grid from "@mui/material/Grid"
 import TextField from "@mui/material/TextField"
 import { useContext, useState } from "react"
 import { DayContext } from "./DayContext"
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker'
 import dayjs from "dayjs"
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import 'dayjs/locale/lt';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import 'dayjs/locale/lt'
 import IconButton from "@mui/material/IconButton"
+import Tooltip from '@mui/material/Tooltip'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CloseIcon from '@mui/icons-material/Close'
 import { LOCALE } from '../config'
@@ -57,11 +58,13 @@ export const ReminderCreateForm = ({onCreate}) => {
 
     return (
         <div className="create__container">
-            <IconButton aria-label="Sukurti naują priminimą"
-                onClick={openDialog}
-            >
-                <AddCircleOutlineIcon color="secondary" />
-            </IconButton>
+            <Tooltip title="Sukurti">
+                <IconButton aria-label="Sukurti naują priminimą"
+                    onClick={openDialog}
+                >
+                    <AddCircleOutlineIcon color="secondary" />
+                </IconButton>
+            </Tooltip>
 
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={LOCALE}>
 

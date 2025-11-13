@@ -4,6 +4,7 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import IconButton from '@mui/material/IconButton'
+import Tooltip from '@mui/material/Tooltip'
 import TableContainer from '@mui/material/TableContainer'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -11,7 +12,7 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import { styled } from '@mui/material/styles'
 import { ReminderCreateForm } from './components/ReminderCreateForm'
-import { DayContext } from './components/DayContext';
+import { DayContext } from './components/DayContext'
 import { ReminderEditForm } from './components/ReminderEditForm'
 import { LOCALE } from './config'
 import { formatTime, formatDay, isSameDay } from './format'
@@ -144,17 +145,19 @@ function App() {
           {reminder.description}
         </TableCell>
         <TableCell align='right'>
-          <IconButton aria-label="Ištrinti priminimą" onClick={() => deleteReminder(reminder.id)}>
-            <DeleteForeverIcon />
-          </IconButton>
-        </TableCell>
-        <TableCell align='right'>
           <DayContext.Provider value={day}>
             <ReminderEditForm
               onUpdate={(formData) => updateReminder(reminder.id, formData)}
               reminder={reminder}
               />
           </DayContext.Provider>
+        </TableCell>
+        <TableCell align='right'>
+          <Tooltip title="Ištrinti">
+            <IconButton aria-label="Ištrinti priminimą" onClick={() => deleteReminder(reminder.id)}>
+              <DeleteForeverIcon />
+            </IconButton>
+            </Tooltip>
         </TableCell>
       </TableRow>
     )
