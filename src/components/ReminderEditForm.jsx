@@ -16,7 +16,8 @@ import 'dayjs/locale/lt';
 import IconButton from "@mui/material/IconButton"
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close'
-import {formatDay, LOCALE} from '../format'
+import { LOCALE } from '../config'
+import { formatDay } from '../format'
 import { useFormik } from 'formik'
 import { validationSchema } from './validation'
 

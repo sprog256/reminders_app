@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import axios from 'axios'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
@@ -14,12 +13,13 @@ import { styled } from '@mui/material/styles'
 import { ReminderCreateForm } from './components/ReminderCreateForm'
 import { DayContext } from './components/DayContext';
 import { ReminderEditForm } from './components/ReminderEditForm'
-import { formatTime, formatDay, isSameDay, LOCALE } from './format'
+import { LOCALE } from './config'
+import { formatTime, formatDay, isSameDay } from './format'
 
 import './App.css'
+import { ReminderService } from './service/reminderService'
+import { HolidayService } from './service/holidayService'
 
-const REMINDERS_BASE_URL = 'http://localhost:8080/reminders'
-const HOLIDAYS_BASE_URL = 'http://localhost:8080/holidays'
 const HOLIDAY_CLASS = "holiday"
 
 function App() {
@@ -34,42 +34,16 @@ function App() {
   const [holidaysToShow, setHolidaysToShow] = useState([])
 
   useEffect(() => {
-    axios.get(REMINDERS_BASE_URL)
-      .then(response => {
-        let data_transformed = response.data.map(o => ({
-          ...o,
-          deadline: new Date(o.deadline)
-        }))
-
-        setReminders(data_transformed)
-      })
-      .finally(() => {
-        setLoadingReminders(false);
-      })
+    setLoadingReminders(true)
+    ReminderService.getAll()
+      .then(data => setReminders(data))
+      .finally(() => setLoadingReminders(false))
   }, [])
 
   useEffect(() => {
-    let urls = []
-    for (let i = minDay.getFullYear(); i <= maxDay.getFullYear(); i++) {
-      urls.push(HOLIDAYS_BASE_URL + '/' + i + '/' + LOCALE)
-    }
-
-    const requests = urls.map(url => axios.get(url))
-
-    axios.all(requests)
-      .then(responses => {
-        let data = responses.map(response => response.data)
-        let data_flat = [].concat(...data)
-        let data_flat_transformed = data_flat.map(o => ({
-          ...o,
-          day: new Date(o.day)
-        }))
-        setHolidays(data_flat_transformed)
-      })
-      .finally(() => {
-        setLoadingHolidays(false)
-      })
-
+    HolidayService.get(minDay, maxDay)
+      .then(data => setHolidays(data))
+      .finally(() => setLoadingHolidays(false))
   }, [minDay, maxDay])
 
   useEffect(() => {
@@ -84,54 +58,19 @@ function App() {
     setHolidaysToShow(holidays.filter(holiday => isSameDay(holiday.day, day)));
   }, [day, holidays])
 
-  const deleteReminder = (id) => {
-    axios.delete(REMINDERS_BASE_URL + "/" + id).then(() => {
-      setReminders(reminders.filter(o => o.id !== id))
-    })
-  }
-
-  const gatherDeadline = (formData) => {
-    let deadline = new Date(
-      day.getFullYear(),
-      day.getMonth(),
-      day.getDate(),
-      formData.time.getHours(),
-      formData.time.getMinutes())
-    return deadline
-  }
-
   const createReminder = (formData) => {
-    let newData = {
-      deadline: gatherDeadline(formData),
-      description: formData.description
-    }
-
-    axios.post(REMINDERS_BASE_URL, newData)
-      .then((response) => {
-        let newReminder = {
-          ...response.data,
-          deadline: new Date(response.data.deadline)
-        }
-        setReminders([...reminders, newReminder])
-      })
-
+    ReminderService.create(formData, day)
+      .then(data => setReminders([...reminders, data]))
   }
 
-  const editReminder = (formData) => {
-    let dto = {
-      deadline: gatherDeadline(formData),
-      description: formData.description
-    }
+  const updateReminder = (id, formData) => {
+    ReminderService.update(id, formData, day)
+      .then(data => setReminders([...reminders.filter(o => o.id !== data.id), data]))
+  }
 
-    axios.put(REMINDERS_BASE_URL + "/" + formData.id, dto)
-      .then((response) => {
-        let newReminder = {
-          ...response.data,
-          deadline: new Date(response.data.deadline)
-        }
-        setReminders([...reminders.filter(o => o.id !== newReminder.id), newReminder])
-      })
-
+  const deleteReminder = (id) => {
+    ReminderService.del(id)
+      .then(() => setReminders(reminders.filter(o => o.id !== id)))
   }
 
   const countReminders = (date) => {
@@ -212,7 +151,7 @@ function App() {
         <TableCell align='right'>
           <DayContext.Provider value={day}>
             <ReminderEditForm
-              onUpdate={(formData) => editReminder(formData)}
+              onUpdate={(formData) => updateReminder(reminder.id, formData)}
               reminder={reminder}
               />
           </DayContext.Provider>
